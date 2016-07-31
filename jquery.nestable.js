@@ -63,8 +63,7 @@
 
             list.el.data('nestable-group', this.options.group);
 
-            list.placeEl = $('<tr class="' + list.options.placeClass + '"><td>&nbsp;</td></tr>');
-          
+            list.placeEl = $('<tr class="' + list.options.placeClass + '"><td>1111r</td></tr>');
             $.each(this.el.find(list.options.itemNodeName), function(k, el) {
                 list.setParent($(el));
             });
@@ -144,21 +143,21 @@
                 step  = function(level, depth)
                 {
                     var array = [ ],
-                        items = level.children(list.options.itemNodeName);
+                        items = level.find(list.options.itemNodeName);
                     items.each(function()
                     {
                         var li   = $(this),
                             item = $.extend({}, li.data()),
-                            sub  = li.children(list.options.listNodeName);
+                            sub  = li.find(list.options.listNodeName);
                         if (sub.length) {
-                            item.children = step(sub, depth + 1);
+                            item.find = step(sub, depth + 1);
                         }
                         array.push(item);
                     });
                     return array;
                 };
             data = step(list.el.find(list.options.listNodeName).first(), depth);
-            return data;
+            return JSON.stringify(data);
         },
 
         serialise: function()
@@ -194,6 +193,7 @@
             this.dragDepth  = 0;
             this.hasNewRoot = false;
             this.pointEl    = null;
+            this.DragStartOrder = null;
         },
 
         expandItem: function(li)
@@ -252,6 +252,7 @@
             var mouse    = this.mouse,
                 target   = $(e.target),
                 dragItem = target.closest(this.options.itemNodeName);
+          this.DragStartOrder = this.serialize();
             this.placeEl.css('height', dragItem.height());
 
             mouse.offsetX = e.offsetX !== undefined ? e.offsetX : e.pageX - target.offset().left;
@@ -292,10 +293,11 @@
             this.placeEl.replaceWith(el);
  
             this.dragEl.remove();
-            this.el.trigger('change');
-            if (this.hasNewRoot) {
-                this.dragRootEl.trigger('change');
-            }
+          if (this.DragStartOrder !== this.serialize())  
+          this.el.trigger('change');
+            //if (this.hasNewRoot) {
+            //    this.dragRootEl.trigger('change');
+            //}
             this.reset();
         },
 
@@ -482,7 +484,3 @@
     };
 
 })(window.jQuery || window.Zepto, window, document);
-
-$(document).ready(function(){
-  $('#nestable').nestable();
-})
