@@ -27,8 +27,8 @@
     })();
 
     var defaults = {
-            listNodeName    : 'ol',
-            itemNodeName    : 'li',
+            listNodeName    : 'table',
+            itemNodeName    : 'tr.dd-item',
             rootClass       : 'dd',
             listClass       : 'dd-list',
             itemClass       : 'dd-item',
@@ -41,7 +41,7 @@
             expandBtnHTML   : '<button data-action="expand" type="button">Expand</button>',
             collapseBtnHTML : '<button data-action="collapse" type="button">Collapse</button>',
             group           : 0,
-            maxDepth        : 5,
+            maxDepth        : 1,
             threshold       : 20
         };
 
@@ -63,15 +63,15 @@
 
             list.el.data('nestable-group', this.options.group);
 
-            list.placeEl = $('<div class="' + list.options.placeClass + '"/>');
-
+            list.placeEl = $('<tr class="' + list.options.placeClass + '"><td>&nbsp;</td></tr>');
+          
             $.each(this.el.find(list.options.itemNodeName), function(k, el) {
                 list.setParent($(el));
             });
 
             list.el.on('click', 'button', function(e) {
                 if (list.dragEl) {
-                    return;
+                  return;
                 }
                 var target = $(e.currentTarget),
                     action = target.data('action'),
@@ -252,7 +252,6 @@
             var mouse    = this.mouse,
                 target   = $(e.target),
                 dragItem = target.closest(this.options.itemNodeName);
-
             this.placeEl.css('height', dragItem.height());
 
             mouse.offsetX = e.offsetX !== undefined ? e.offsetX : e.pageX - target.offset().left;
@@ -287,10 +286,11 @@
 
         dragStop: function(e)
         {
-            var el = this.dragEl.children(this.options.itemNodeName).first();
-            el[0].parentNode.removeChild(el[0]);
+            var el = this.dragEl.find(this.options.itemNodeName).first();
+          el[0].parentNode.removeChild(el[0]);
+          //el.parentNode.removeChild(el);
             this.placeEl.replaceWith(el);
-
+ 
             this.dragEl.remove();
             this.el.trigger('change');
             if (this.hasNewRoot) {
@@ -482,3 +482,7 @@
     };
 
 })(window.jQuery || window.Zepto, window, document);
+
+$(document).ready(function(){
+  $('#nestable').nestable();
+})
