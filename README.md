@@ -3,40 +3,35 @@ Nestable
 
 ## PLEASE NOTE
 
-**I cannot provide any support or guidance beyond this README. If this code helps you that's great but I have no plans to develop Nestable beyond this demo (it's not a final product and has limited functionality). I cannot reply to any requests for help.**
+This fork was made solely for my project feel free to use it the way you want.
+Main differences from original:
+* reorders table rows, so there is no multi-level list support.
+* minor fix to 'change' event. It is now fired only if element actually changed it's position.
+* serialize now returns JSON string.
 
 * * *
 
-### Drag & drop hierarchical list with mouse and touch compatibility (jQuery / Zepto plugin)
-
-[**Try Nestable Demo**](http://dbushell.github.com/Nestable/)
-
-Nestable is an experimental example and not under active development. If it suits your requirements feel free to expand upon it!
+[**Demo on CodePen**](http://codepen.io/upgrayedd/pen/OXwAXO)
 
 ## Usage
 
 Write your nested HTML lists like so:
 
-    <div class="dd">
-        <ol class="dd-list">
-            <li class="dd-item" data-id="1">
-                <div class="dd-handle">Item 1</div>
-            </li>
-            <li class="dd-item" data-id="2">
-                <div class="dd-handle">Item 2</div>
-            </li>
-            <li class="dd-item" data-id="3">
-                <div class="dd-handle">Item 3</div>
-                <ol class="dd-list">
-                    <li class="dd-item" data-id="4">
-                        <div class="dd-handle">Item 4</div>
-                    </li>
-                    <li class="dd-item" data-id="5">
-                        <div class="dd-handle">Item 5</div>
-                    </li>
-                </ol>
-            </li>
-        </ol>
+    <div class="dd" id="nestable">
+        <table class="dd-list">
+            <tr class="dd-item" data-id="1">
+                <td class="dd-handle">Item 1</td>
+            </tr>
+            <tr class="dd-item" data-id="2">
+                <td class="dd-handle">Item 2</td>
+            </tr>
+            <tr class="dd-item" data-id="3">
+                <td class="dd-handle">Item 3</td>
+            </tr>
+            <tr class="dd-item" data-id="4">
+                <td class="dd-handle">Item 4</td>
+            </tr>
+        </table>
     </div>
 
 Then activate with jQuery like so:
